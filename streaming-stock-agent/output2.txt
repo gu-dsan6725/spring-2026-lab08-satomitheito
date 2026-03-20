@@ -1,0 +1,28 @@
+Session: cli_session
+Query: Compare Tesla and Ford
+------------------------------------------------------------
+
+[Tool calls starting...]
+
+[Calling tool: compare_stocks with args {'symbol1': 'TSLA', 'symbol2': 'F'}]
+[Tool calls completed]
+
+Here's a comparison of Tesla (TSLA) and Ford (F):
+
+**Current Prices:**
+- **TSLA:** $374.19 (Down 1.61%)
+- **F:** $11.53 (Down 0.95%)
+
+**Market Cap:**
+- **TSLA:** $1.4 trillion
+- **F:** $46 billion
+
+**Daily Performance:**
+- Tesla fell $6.11 (1.61%)
+- Ford fell $0.11 (0.95%)
+
+Tesla, the electric vehicle leader, has a massive market cap nearly 30x larger than Ford's, despite both stocks showing declines today. Tesla's price drop is more significant percentage-wise, while Ford's decline is smaller in absolute terms. This reflects their different positions in the auto industry (EV innovator vs. traditional automaker).
+[Done]
+
+============================================================
+
