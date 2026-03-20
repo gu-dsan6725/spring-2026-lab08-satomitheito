@@ -174,8 +174,23 @@ uv run python test_client.py > output3.txt
 ## Questions to Consider
 
 After completing the exercise, reflect on:
+
 1. How did the LLM know to call your new tool?
+
+The LLM receives all tool schemas (name, description, and parameters) with every API request via _convert_tools_for_litellm(). It never sees the Python code, only the JSON schema. When the user says something like "Compare AAPL and MSFT," the LLM matches that intent against the compare_stocks description and generates a structured tool call with the right arguments.
+
 2. What happens if the tool schema description is unclear?
+
+The LLM may pick the wrong tool, fail to pick any tool, or pass bad parameters. For example, if compare_stocks just said "stock tool," the LLM wouldn't know when to use it versus get_stock_price.
+
 3. How does the agent decide between `compare_stocks` and `get_stock_price`?
+
+It comes down to intent matching against descriptions and parameter schemas. If the user mentions two stocks with comparison language ("compare," "versus," "which is better"), the LLM picks compare_stocks because the description matches and it takes two symbol parameters. A single-stock price question matches get_stock_price which only takes one ticker. 
+
 4. How would you add validation for parameter values?
+
+At the function level check that symbols are non-empty, uppercase them, and verify the ticker exists via yf.Ticker(symbol).info before proceeding. You could also add "pattern": "^[A-Z]{1,5}$" in the JSON Schema, but function-level validation is more reliable since LLMs don't always follow schema constraints.
+
 5. What if the user asks to compare 3 stocks instead of 2?
+
+The current tool only accepts two symbols, so the LLM would either call compare_stocks multiple times (AAPL vs MSFT, then AAPL vs GOOGL) or fall back to calling get_stock_price three times and comparing in its text response. To properly support 3+ stocks, you would change the parameters to accept an array: "symbols": {"type": "array", "items": {"type": "string"}, "minItems": 2}.
